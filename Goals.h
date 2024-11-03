@@ -26,4 +26,6 @@ public:
     sf::RectangleShape SFverticalShape;
     sf::RectangleShape SFhorizontalShape;
 
+    sf::RectangleShape sfGoalShape;
+    sf::Texture goalTexture;
 };

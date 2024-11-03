@@ -7,9 +7,6 @@ Box::Box(b2World& world) {
     groundBody = world.CreateBody(&groundBodyDef);
     groundBox.SetAsBox(WINDOW_WIDTH / 2.0f / SCALE, 10.0f / SCALE);
     groundBody->CreateFixture(&groundBox, 0.0f);
-    sfGround = sf::RectangleShape(sf::Vector2f(WINDOW_WIDTH, 20.0f));
-    sfGround.setFillColor(sf::Color::Green);
-    sfGround.setPosition(0.0f, WINDOW_HEIGHT - 20.0f);
 
     //Потолок
     ceilingBodyDef.position.Set(WINDOW_WIDTH / 2.0f / SCALE, 0.0f / SCALE);

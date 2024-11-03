@@ -14,6 +14,7 @@ public:
 	b2FixtureDef ballFixtureDef;
 
 	sf::CircleShape sfBall;
+	sf::Texture ballTexture;
 	void update();
 };
 

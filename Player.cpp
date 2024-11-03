@@ -7,7 +7,6 @@ Player::Player(b2World& world, sf::Color color, b2Vec2 position) {
 	playerBodyDef.position.Set(position.x, position.y);
 	playerBody = world.CreateBody(&playerBodyDef);
 
-
 	playerShape.m_radius = PLAYER_RADIUS / SCALE;
 
 	playerFixtureDef.shape = &playerShape;
@@ -19,13 +18,13 @@ Player::Player(b2World& world, sf::Color color, b2Vec2 position) {
 	playerBody->CreateFixture(&playerFixtureDef);
 
 	sfPlayer = sf::CircleShape(PLAYER_RADIUS);
-	sfPlayer.setFillColor(color);
 	sfPlayer.setOrigin(PLAYER_RADIUS, PLAYER_RADIUS);
 	score = 0;
+	
 }
 
 
-void Player::move(int direction) {
+void Player::move() {
 	float desiredVelocity = PLAYER_SPEED * direction;
 	b2Vec2 currentVelocity = playerBody->GetLinearVelocity();
 

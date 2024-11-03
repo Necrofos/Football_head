@@ -15,28 +15,38 @@ public:
 	b2CircleShape playerShape;
 	b2FixtureDef playerFixtureDef;
 	sf::CircleShape sfPlayer;
+
+	sf::Texture playerTexture;
 	int score;
 	bool wasJumping;
+	int direction;
 
 
-	void move(int direction);
+	void move();
 
 	void update();
 
 	void jump();
 
 	virtual void kick(Ball& ball) = 0;
+	
 };
 
 class Player1 : public Player {
 public:
-	Player1(b2World& world, sf::Color color, b2Vec2 position) : Player(world, color, position) {};
+	Player1(b2World& world, sf::Color color, b2Vec2 position) : Player(world, color, position) {
+		playerTexture.loadFromFile("icons/heads/P1.png");
+		sfPlayer.setTexture(&playerTexture);
+	}
 	void kick(Ball& ball) override;
 };
 
 class Player2 : public Player {
 public:
-	Player2(b2World& world, sf::Color color, b2Vec2 position) : Player(world, color, position) {};
+	Player2(b2World& world, sf::Color color, b2Vec2 position) : Player(world, color, position) {
+		playerTexture.loadFromFile("icons/heads/P2.png");
+		sfPlayer.setTexture(&playerTexture);
+	}
 	void kick(Ball& ball) override;
 };
 

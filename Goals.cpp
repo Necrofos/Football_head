@@ -4,14 +4,20 @@ Goal::Goal(b2World& world, bool isLeft) {
 	goalWidth = 10.0f;
 	goalHeight = 200.0f;
 	roofHeight = 10.0f;
-	roofWidth = 50.0f;
+	roofWidth = 110.0f;
+	int xGoal; 
+	int yGoal = WINDOW_HEIGHT - goalHeight - roofHeight - 20;
 	if (isLeft) {
 		xPosition = goalWidth / 2;
 		xRoof = roofWidth / 2;
+		xGoal = 0;
+		goalTexture.loadFromFile("icons/goals/l.png");
 	}
 	else {
 		xPosition = WINDOW_WIDTH - (goalWidth / 2);
 		xRoof = WINDOW_WIDTH - (roofWidth / 2);
+		xGoal = WINDOW_WIDTH - roofWidth;
+		goalTexture.loadFromFile("icons/goals/r.png");
 	}
 	float yPosition = WINDOW_HEIGHT - 20 - (goalHeight / 2);
 	float yRoof = yPosition - (goalHeight / 2 + roofHeight / 2);
@@ -30,19 +36,24 @@ Goal::Goal(b2World& world, bool isLeft) {
 	horizontalPolygon.SetAsBox((roofWidth / 2) / SCALE, (roofHeight / 2) / SCALE);
 	horizontalBody->CreateFixture(&horizontalPolygon, 0.0f);
 
-	SFverticalShape.setSize(sf::Vector2f(goalWidth, goalHeight));
-	SFverticalShape.setFillColor(sf::Color::White);
-	SFverticalShape.setOrigin(goalWidth / 2, goalHeight / 2);
-	SFverticalShape.setPosition(xPosition, yPosition);
+	//SFverticalShape.setSize(sf::Vector2f(goalWidth, goalHeight));
+	//SFverticalShape.setFillColor(sf::Color::White);
+	//SFverticalShape.setOrigin(goalWidth / 2, goalHeight / 2);
+	//SFverticalShape.setPosition(xPosition, yPosition);
 
 
-	SFhorizontalShape.setSize(sf::Vector2f(roofWidth, roofHeight));
-	SFhorizontalShape.setFillColor(sf::Color::White);
-	SFhorizontalShape.setOrigin(roofWidth / 2, roofHeight / 2);
-	SFhorizontalShape.setPosition(xRoof, yRoof);
+	//SFhorizontalShape.setSize(sf::Vector2f(roofWidth, roofHeight));
+	//SFhorizontalShape.setFillColor(sf::Color::White);
+	//SFhorizontalShape.setOrigin(roofWidth / 2, roofHeight / 2);
+	//SFhorizontalShape.setPosition(xRoof, yRoof);
+
+	sfGoalShape.setSize(sf::Vector2f(roofWidth, goalHeight + roofHeight));
+	sfGoalShape.setPosition(xGoal, yGoal);
+	sfGoalShape.setTexture(&goalTexture);
 }
 
 void Goal::draw(sf::RenderWindow& window) {
 	window.draw(SFverticalShape);
 	window.draw(SFhorizontalShape);
+	window.draw(sfGoalShape);
 }

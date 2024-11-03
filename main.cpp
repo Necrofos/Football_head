@@ -1,11 +1,7 @@
-﻿#include "SFML/Graphics.hpp"
-#include <string>
-#include <iostream>
+﻿#include "Game.h"
 
 int main() {
-	sf::Font font;
-	int a;
-	font.loadFromFile("arial.ttf");
-	std::cin >> a;
+	Game game;
+	game.run();
 	return 0;
 }

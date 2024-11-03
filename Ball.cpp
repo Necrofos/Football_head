@@ -18,6 +18,8 @@ Ball::Ball(b2World& world) {
 
 
     sfBall = sf::CircleShape(RADIUS);
+    ballTexture.loadFromFile("icons/ball.png");
+    sfBall.setTexture(&ballTexture);
     sfBall.setFillColor(sf::Color::White);
     sfBall.setOrigin(RADIUS, RADIUS);
 }
