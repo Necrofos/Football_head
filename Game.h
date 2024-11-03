@@ -19,6 +19,8 @@ private:
     void update();
     void draw();
     void check_goal();
+    void checkWin();
+    void drawGoalText();
 
     sf::RenderWindow window;
     b2World world;

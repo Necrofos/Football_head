@@ -1,4 +1,6 @@
 #include "Game.h"
+#include <thread>
+#include <chrono>
 Game::Game()
     : world(b2Vec2(0.0f, 20.0f)),
     box(world),
@@ -27,6 +29,7 @@ void Game::run() {
             processingEventsInGame();
             check_goal();
             update();
+            checkWin();
         }
         else {
             processingEventsInMenu();
@@ -115,7 +118,6 @@ void Game::draw() {
         menu.draw(window);
         window.display();
     }
-
 }
 
 void Game::check_goal() {
@@ -127,6 +129,10 @@ void Game::check_goal() {
         ball.ballBody->SetTransform(b2Vec2(WINDOW_WIDTH / 2 / SCALE, WINDOW_HEIGHT / 2 / SCALE), 0);
         std::cout << "Player 2 score: " << player2.score << std::endl;
         ball.ballBody->SetLinearVelocity(b2Vec2(0, 0));
+        ball.ballBody->SetAngularVelocity(0);
+        drawGoalText();
+        player1.playerBody->SetTransform(b2Vec2((2 * PLAYER_RADIUS + 20) / SCALE, 400 / SCALE), 0);
+        player2.playerBody->SetTransform(b2Vec2((WINDOW_WIDTH - 2 * PLAYER_RADIUS - 20) / SCALE, 400 / SCALE), 0);
     }
     else if (ball.ballBody->GetPosition().x >= rightGoal.horizontalBody->GetPosition().x - (rightGoal.roofWidth / 2 / SCALE) &&
         ball.ballBody->GetPosition().y >= leftGoal.horizontalBody->GetPosition().y - (leftGoal.roofHeight / 2 / SCALE))
@@ -136,6 +142,10 @@ void Game::check_goal() {
         ball.ballBody->SetTransform(b2Vec2(WINDOW_WIDTH / 2 / SCALE, WINDOW_HEIGHT / 2 / SCALE), 0);
         std::cout << "Player 1 score: " << player1.score << std::endl;
         ball.ballBody->SetLinearVelocity(b2Vec2(0, 0));
+        ball.ballBody->SetAngularVelocity(0);
+        drawGoalText();
+        player1.playerBody->SetTransform(b2Vec2((2 * PLAYER_RADIUS + 20) / SCALE, 400 / SCALE), 0);
+        player2.playerBody->SetTransform(b2Vec2((WINDOW_WIDTH - 2 * PLAYER_RADIUS - 20) / SCALE, 400 / SCALE), 0);
     }
 }
 
@@ -161,6 +171,32 @@ void Game::processingEventsInMenu() {
         }
     }
 }
+
+void Game::checkWin() {
+    if (score.player1 == 5 || score.player2 == 5) {
+        inGame = false;
+        score.player1 = 0;
+        score.player2 = 0;
+    }
+}
+
+void Game::drawGoalText() {
+    sf::Text text;
+    sf::Font font;
+    font.loadFromFile("fonts/arial.ttf");
+    text.setFont(font);
+    text.setString("GOAL!!!");
+    text.setCharacterSize(100);
+    text.setFillColor(sf::Color::Red);
+    text.setPosition(WINDOW_WIDTH / 2 - 150, WINDOW_HEIGHT / 2 - 50);
+
+    window.draw(text);
+    window.display();
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+
+}
+
+
 
 
 

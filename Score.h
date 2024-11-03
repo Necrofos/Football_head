@@ -18,10 +18,14 @@ public:
 	sf::Text text;
 	sf::Text score1;
 	sf::Text score2;
-	sf::Text timer;
 	std::string fontPath;
 	sf::Texture texture;
 	sf::RectangleShape boardShape;
+
+	sf::Text player1Label;
+	sf::Text player2Label;
+	sf::Text timerText;
+	sf::Clock gameClock;
 
 
 };
