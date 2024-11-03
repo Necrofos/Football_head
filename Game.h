@@ -35,6 +35,7 @@ private:
     sf::Texture backgroundTexture;
     sf::Sprite backgroundSprite;
     bool inGame;
+    b2Vec2 ballStartPosition;
 
 };
 

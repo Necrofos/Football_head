@@ -13,7 +13,8 @@ Game::Game()
     menu(window.getSize().x, window.getSize().y)
 {
     inGame = false;
-    window.create(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "SFML + Box2D Circle");
+    ballStartPosition = b2Vec2(WINDOW_WIDTH / 2 / SCALE, (WINDOW_HEIGHT / 2 - 100) / SCALE);
+    window.create(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Head soccer");
     window.setFramerateLimit(60);
     backgroundTexture.loadFromFile("icons/backgrounds/background1.jpg");
     backgroundSprite.setTexture(backgroundTexture);
@@ -126,7 +127,7 @@ void Game::check_goal() {
     {
         player2.score += 1;
         score.updateScore(2);
-        ball.ballBody->SetTransform(b2Vec2(WINDOW_WIDTH / 2 / SCALE, WINDOW_HEIGHT / 2 / SCALE), 0);
+        ball.ballBody->SetTransform(ballStartPosition, 0);
         ball.ballBody->SetLinearVelocity(b2Vec2(0, 0));
         ball.ballBody->SetAngularVelocity(0);
         drawGoalText();
@@ -138,7 +139,7 @@ void Game::check_goal() {
     {
         player1.score += 1;
         score.updateScore(1);
-        ball.ballBody->SetTransform(b2Vec2(WINDOW_WIDTH / 2 / SCALE, WINDOW_HEIGHT / 2 / SCALE), 0);
+        ball.ballBody->SetTransform(ballStartPosition, 0);
         ball.ballBody->SetLinearVelocity(b2Vec2(0, 0));
         ball.ballBody->SetAngularVelocity(0);
         drawGoalText();

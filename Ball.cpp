@@ -2,7 +2,7 @@
 
 Ball::Ball(b2World& world) {
     ballBodyDef.type = b2_dynamicBody;
-    ballBodyDef.position.Set(WINDOW_HEIGHT / SCALE, 100.0f / SCALE);
+    ballBodyDef.position.Set(WINDOW_WIDTH / 2 / SCALE, (WINDOW_HEIGHT / 2 - 100) / SCALE);
     ballBodyDef.bullet = true;
     ballBody = world.CreateBody(&ballBodyDef);
 

@@ -36,16 +36,6 @@ Goal::Goal(b2World& world, bool isLeft) {
 	horizontalPolygon.SetAsBox((roofWidth / 2) / SCALE, (roofHeight / 2) / SCALE);
 	horizontalBody->CreateFixture(&horizontalPolygon, 0.0f);
 
-	//SFverticalShape.setSize(sf::Vector2f(goalWidth, goalHeight));
-	//SFverticalShape.setFillColor(sf::Color::White);
-	//SFverticalShape.setOrigin(goalWidth / 2, goalHeight / 2);
-	//SFverticalShape.setPosition(xPosition, yPosition);
-
-
-	//SFhorizontalShape.setSize(sf::Vector2f(roofWidth, roofHeight));
-	//SFhorizontalShape.setFillColor(sf::Color::White);
-	//SFhorizontalShape.setOrigin(roofWidth / 2, roofHeight / 2);
-	//SFhorizontalShape.setPosition(xRoof, yRoof);
 
 	sfGoalShape.setSize(sf::Vector2f(roofWidth, goalHeight + roofHeight));
 	sfGoalShape.setPosition(xGoal, yGoal);
