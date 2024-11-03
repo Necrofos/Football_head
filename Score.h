@@ -13,6 +13,7 @@ public:
 	sf::Vector2f position;
 	int player1;
 	int player2;
+	int timeRemaining;
 	sf::Font font;
 
 	sf::Text text;

@@ -42,7 +42,7 @@ Score::Score() {
     boardShape.setTexture(&texture);
     boardShape.setPosition(640 - 250, 0);
 
-    gameClock.restart();
+    timeRemaining = 20;
 }
 
 void Score::updateScore(int playerNumber) {
@@ -58,11 +58,17 @@ void Score::updateText() {
     score1.setString(std::to_string(player1));
     score2.setString(std::to_string(player2));
 
-    sf::Time elapsed = gameClock.getElapsedTime();
-    int minutes = elapsed.asSeconds() / 60;
-    int seconds = static_cast<int>(elapsed.asSeconds()) % 60;
-    timerText.setString((minutes < 10 ? "0" : "") + std::to_string(minutes) + ":" +
-        (seconds < 10 ? "0" : "") + std::to_string(seconds));
+    if (gameClock.getElapsedTime().asSeconds() >= 1.0f) {
+        timeRemaining--;
+        gameClock.restart();
+    }
+    if (timeRemaining < 0) {
+        timeRemaining = 0;
+    }
+
+    int minutes = timeRemaining / 60;
+    int seconds = timeRemaining % 60;
+    timerText.setString((minutes < 10 ? "0" : "") + std::to_string(minutes) + ":" + (seconds < 10 ? "0" : "") + std::to_string(seconds));
 }
 
 void Score::draw(sf::RenderWindow& window) {

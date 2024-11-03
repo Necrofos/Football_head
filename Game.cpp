@@ -127,7 +127,6 @@ void Game::check_goal() {
         player2.score += 1;
         score.updateScore(2);
         ball.ballBody->SetTransform(b2Vec2(WINDOW_WIDTH / 2 / SCALE, WINDOW_HEIGHT / 2 / SCALE), 0);
-        std::cout << "Player 2 score: " << player2.score << std::endl;
         ball.ballBody->SetLinearVelocity(b2Vec2(0, 0));
         ball.ballBody->SetAngularVelocity(0);
         drawGoalText();
@@ -140,7 +139,6 @@ void Game::check_goal() {
         player1.score += 1;
         score.updateScore(1);
         ball.ballBody->SetTransform(b2Vec2(WINDOW_WIDTH / 2 / SCALE, WINDOW_HEIGHT / 2 / SCALE), 0);
-        std::cout << "Player 1 score: " << player1.score << std::endl;
         ball.ballBody->SetLinearVelocity(b2Vec2(0, 0));
         ball.ballBody->SetAngularVelocity(0);
         drawGoalText();
@@ -177,6 +175,13 @@ void Game::checkWin() {
         inGame = false;
         score.player1 = 0;
         score.player2 = 0;
+        score.timeRemaining = 20;
+    }
+    if (score.timeRemaining == 0) {
+        inGame = false;
+        score.player1 = 0;
+        score.player2 = 0;
+        score.timeRemaining = 20;
     }
 }
 
