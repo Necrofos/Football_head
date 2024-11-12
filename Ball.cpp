@@ -22,6 +22,7 @@ Ball::Ball(b2World& world) {
     sfBall.setTexture(&ballTexture);
     sfBall.setFillColor(sf::Color::White);
     sfBall.setOrigin(RADIUS, RADIUS);
+    ballBody->SetUserData((void*)"Ball");
 }
 
 void Ball::update() {

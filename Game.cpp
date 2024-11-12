@@ -9,10 +9,13 @@ Game::Game()
     player2(world, sf::Color::Blue, b2Vec2((WINDOW_WIDTH - 2 * PLAYER_RADIUS - 20) / SCALE, 400 / SCALE)),
     leftGoal(world, true),
     rightGoal(world, false),
-    score(),
+    score(world),
     menu(window.getSize().x, window.getSize().y)
 {
     inGame = false;
+    gameStart = true;
+    ballSound.openFromFile("sounds/ballCollide.wav");
+    contactListener = new GameContactListener(ballSound);
     ballStartPosition = b2Vec2(WINDOW_WIDTH / 2 / SCALE, (WINDOW_HEIGHT / 2 - 100) / SCALE);
     window.create(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Head soccer");
     window.setFramerateLimit(60);
@@ -20,24 +23,31 @@ Game::Game()
     backgroundSprite.setTexture(backgroundTexture);
     player1.playerBody->SetFixedRotation(true);
     player2.playerBody->SetFixedRotation(true);
+    whistle.openFromFile("sounds/Whistle.wav");
+    goalScore.openFromFile("sounds/goalscored3.wav");
+    world.SetContactListener(contactListener);
 
 }
 
 void Game::run() {
     while (window.isOpen()) {
-        draw();
+        draw(); 
         if (inGame) {
             processingEventsInGame();
             check_goal();
             update();
             checkWin();
+
+            if (gameStart) {
+                start();
+            }
         }
         else {
             processingEventsInMenu();
         }
-
     }
 }
+
 
 void Game::processingEventsInGame() {
     sf::Event event;
@@ -71,9 +81,11 @@ void Game::processingEventsInGame() {
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
             player1.kick(ball);
+            std::cout << "Player1 kick";
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::RAlt)) {
             player2.kick(ball);
+            std::cout << "Player2 kick";
         }
         if (!sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
             player1.wasJumping = false;
@@ -110,6 +122,8 @@ void Game::draw() {
         window.draw(ball.sfBall);
         window.draw(player1.sfPlayer);
         window.draw(player2.sfPlayer);
+        window.draw(player1.bootSprite);
+        window.draw(player2.bootSprite);
         score.draw(window);
         leftGoal.draw(window);
         rightGoal.draw(window);
@@ -156,13 +170,18 @@ void Game::processingEventsInMenu() {
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
             menu.moveUp();
+            menu.click.play();
         }
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+            menu.click.play();
             menu.moveDown();
         }
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) {
+            menu.click.play();
             if (menu.selectedItemIndex == 0) {
                 inGame = true;
+                menu.music.stop();
+                gameStart = true;
             }
             else {
                 window.close();
@@ -172,35 +191,121 @@ void Game::processingEventsInMenu() {
 }
 
 void Game::checkWin() {
-    if (score.player1 == 5 || score.player2 == 5) {
+    sf::Text text;
+    sf::Font font;
+    font.loadFromFile("fonts/arial.ttf");
+    text.setCharacterSize(50);
+    text.setFont(font);
+    text.setFillColor(sf::Color::White);
+    text.setPosition(WINDOW_WIDTH / 2 - 150, WINDOW_HEIGHT / 2 - 50);
+    sf::Music crowd;
+    crowd.openFromFile("sounds/goalscored3.wav");
+    if (score.player1 == BALLS_FOR_WIN || score.player2 == BALLS_FOR_WIN) {
+        std::string winner;
+        if (score.player1 == BALLS_FOR_WIN) {
+            winner = "Winner: Player1";
+        }
+        else if (score.player2 == BALLS_FOR_WIN) {
+            winner = "Winner: Player2";
+        }
+        text.setString(winner);
+
         inGame = false;
         score.player1 = 0;
         score.player2 = 0;
-        score.timeRemaining = 20;
+        score.timeRemaining = GAME_TIME;
+        window.draw(text);
+        window.display();
+        crowd.play();
+        std::this_thread::sleep_for(std::chrono::seconds(4));
+        menu.music.play();
     }
-    if (score.timeRemaining == 0) {
+    else if (score.timeRemaining == 0) {
         inGame = false;
+
+        if (score.player1 > score.player2) {
+            text.setString("Winner: Player1");
+        }
+        else if (score.player2 > score.player1) {
+            text.setString("Winner: Player2");
+        }
+        else {
+            text.setString("Draw");
+            text.setPosition(WINDOW_WIDTH / 2 - 120, WINDOW_HEIGHT / 2 - 50);
+            text.setCharacterSize(80);
+        }
+        window.draw(text);
+        window.display();
+        crowd.play();
+        std::this_thread::sleep_for(std::chrono::seconds(4));
+
         score.player1 = 0;
         score.player2 = 0;
-        score.timeRemaining = 20;
+        score.timeRemaining = GAME_TIME;
+        menu.music.play();
+        player1.playerBody->SetTransform(b2Vec2((2 * PLAYER_RADIUS + 20) / SCALE, 400 / SCALE), 0);
+        player2.playerBody->SetTransform(b2Vec2((WINDOW_WIDTH - 2 * PLAYER_RADIUS - 20) / SCALE, 400 / SCALE), 0);
+        ball.ballBody->SetTransform(ballStartPosition, 0);
+        ball.ballBody->SetLinearVelocity(b2Vec2(0, 0));
+        ball.ballBody->SetAngularVelocity(0);
     }
 }
 
+
 void Game::drawGoalText() {
+    if (player1.score != BALLS_FOR_WIN and player2.score != BALLS_FOR_WIN) {
+        goalScore.play();
+        sf::Text text;
+        sf::Font font;
+        font.loadFromFile("fonts/arial.ttf");
+        text.setFont(font);
+        text.setString("GOAL!!!");
+        text.setCharacterSize(100);
+        text.setFillColor(sf::Color::White);
+        text.setPosition(WINDOW_WIDTH / 2 - 150, WINDOW_HEIGHT / 2 - 50);
+        window.draw(text);
+        window.display();
+        std::this_thread::sleep_for(std::chrono::seconds(2));
+        whistle.play();
+    }
+
+}
+
+void Game::start() {
+    gameStart = false;
+
     sf::Text text;
     sf::Font font;
     font.loadFromFile("fonts/arial.ttf");
     text.setFont(font);
-    text.setString("GOAL!!!");
     text.setCharacterSize(100);
-    text.setFillColor(sf::Color::Red);
-    text.setPosition(WINDOW_WIDTH / 2 - 150, WINDOW_HEIGHT / 2 - 50);
+    text.setFillColor(sf::Color::White);
 
-    window.draw(text);
-    window.display();
-    std::this_thread::sleep_for(std::chrono::seconds(2));
+    for (int i = 3; i >= 1; --i) {
+        text.setString(std::to_string(i));
+        text.setPosition(WINDOW_WIDTH / 2 - 24, WINDOW_HEIGHT / 2 - 50);
+        window.clear();
+        window.draw(backgroundSprite);
+        window.draw(box.sfGround);
+        window.draw(ball.sfBall);
+        window.draw(player1.sfPlayer);
+        window.draw(player2.sfPlayer);
+        window.draw(player2.bootSprite);
+        window.draw(player1.bootSprite);
+        score.draw(window);
+        leftGoal.draw(window);
+        rightGoal.draw(window);
 
+        window.draw(text);
+        window.display();
+
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+    }
+    whistle.play();
 }
+
+
+
 
 
 

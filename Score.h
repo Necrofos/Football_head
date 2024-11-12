@@ -1,10 +1,11 @@
 #pragma once
 #include "SFML/Graphics.hpp"
 #include <string>
+#include "box2d/box2d.h"
 class Score
 {
 public:
-	Score();
+	Score(b2World& world);
 	void updateText();
 	void updateScore(int playerNumber);
 	void draw(sf::RenderWindow& window);
@@ -27,7 +28,5 @@ public:
 	sf::Text player2Label;
 	sf::Text timerText;
 	sf::Clock gameClock;
-
-
 };
 

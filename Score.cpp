@@ -2,8 +2,9 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include <SFML/System/Clock.hpp>
+#include "Settings.h"
 
-Score::Score() {
+Score::Score(b2World& world) {
     player1 = 0;
     player2 = 0;
 
@@ -42,7 +43,7 @@ Score::Score() {
     boardShape.setTexture(&texture);
     boardShape.setPosition(640 - 250, 0);
 
-    timeRemaining = 20;
+    timeRemaining = GAME_TIME;
 }
 
 void Score::updateScore(int playerNumber) {

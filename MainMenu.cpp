@@ -18,6 +18,9 @@ MainMenu::MainMenu(float height, float width) {
 	selectedItemIndex = 0;
 	backgroundTexture.loadFromFile("icons/menu/main2.jpg");
 	backgroundSprite.setTexture(backgroundTexture);
+	click.openFromFile("sounds/click.wav");
+	music.openFromFile("sounds/MainMenu.ogg");
+	music.play();
 }
 
 void MainMenu::draw(sf::RenderWindow& window) {
@@ -43,5 +46,6 @@ void MainMenu::moveDown() {
 		menu[selectedItemIndex].setFillColor(sf::Color::Red);
 	}
 }
+
 
 

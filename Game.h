@@ -8,6 +8,8 @@
 #include "Score.h"
 #include <iostream>
 #include "MainMenu.h"
+#include "SFML/Audio.hpp"
+#include "MyContactListener.h"
 
 class Game {
 public:
@@ -21,6 +23,8 @@ private:
     void check_goal();
     void checkWin();
     void drawGoalText();
+    void start();
+    void afterGameMenu();
 
     sf::RenderWindow window;
     b2World world;
@@ -35,7 +39,13 @@ private:
     sf::Texture backgroundTexture;
     sf::Sprite backgroundSprite;
     bool inGame;
+    bool gameStart;
     b2Vec2 ballStartPosition;
+    sf::Music whistle;
+    sf::Music goalScore;
+    sf::Music ballSound;
+    GameContactListener* contactListener;
+
 
 };
 
