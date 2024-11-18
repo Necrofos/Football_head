@@ -26,6 +26,8 @@ Game::Game()
     whistle.openFromFile("sounds/Whistle.wav");
     goalScore.openFromFile("sounds/goalscored3.wav");
     world.SetContactListener(contactListener);
+    backgroundMusic.openFromFile("sounds/mainSound.wav");
+    backgroundMusic.setVolume(15);
 
 }
 
@@ -79,14 +81,15 @@ void Game::processingEventsInGame() {
 
 
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-            player1.kick(ball);
-            std::cout << "Player1 kick";
+        if (event.type == sf::Event::KeyReleased) {
+            if (event.key.code == sf::Keyboard::Space) {
+                player1.kick(ball);
+            }
+            if (event.key.code == sf::Keyboard::RAlt) {
+                player2.kick(ball);
+            }
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::RAlt)) {
-            player2.kick(ball);
-            std::cout << "Player2 kick";
-        }
+
         if (!sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
             player1.wasJumping = false;
         }
@@ -182,6 +185,7 @@ void Game::processingEventsInMenu() {
                 inGame = true;
                 menu.music.stop();
                 gameStart = true;
+                backgroundMusic.play();
             }
             else {
                 window.close();
@@ -218,6 +222,7 @@ void Game::checkWin() {
         window.display();
         crowd.play();
         std::this_thread::sleep_for(std::chrono::seconds(4));
+        backgroundMusic.stop();
         menu.music.play();
     }
     else if (score.timeRemaining == 0) {
@@ -238,6 +243,7 @@ void Game::checkWin() {
         window.display();
         crowd.play();
         std::this_thread::sleep_for(std::chrono::seconds(4));
+        backgroundMusic.stop();
 
         score.player1 = 0;
         score.player2 = 0;
@@ -254,6 +260,7 @@ void Game::checkWin() {
 
 void Game::drawGoalText() {
     if (player1.score != BALLS_FOR_WIN and player2.score != BALLS_FOR_WIN) {
+        backgroundMusic.setVolume(5);
         goalScore.play();
         sf::Text text;
         sf::Font font;
@@ -267,6 +274,7 @@ void Game::drawGoalText() {
         window.display();
         std::this_thread::sleep_for(std::chrono::seconds(2));
         whistle.play();
+        backgroundMusic.setVolume(50);
     }
 
 }

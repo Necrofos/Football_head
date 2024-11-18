@@ -44,6 +44,7 @@ private:
     sf::Music whistle;
     sf::Music goalScore;
     sf::Music ballSound;
+    sf::Music backgroundMusic;
     GameContactListener* contactListener;
 
 

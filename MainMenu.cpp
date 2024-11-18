@@ -10,16 +10,16 @@ MainMenu::MainMenu(float height, float width) {
 	menu[0].setPosition(sf::Vector2f(600, 300));
 
 	menu[1].setFont(font);
-	menu[1].setFillColor(sf::Color::White);
+	menu[1].setFillColor(sf::Color::Black);
 	menu[1].setString("Exit");
 	menu[1].setCharacterSize(50);
 	menu[1].setPosition(sf::Vector2f(600, 400));
 
 	selectedItemIndex = 0;
-	backgroundTexture.loadFromFile("icons/menu/main2.jpg");
+	backgroundTexture.loadFromFile("icons/menu/mainMenu3.jpg");
 	backgroundSprite.setTexture(backgroundTexture);
 	click.openFromFile("sounds/click.wav");
-	music.openFromFile("sounds/MainMenu.ogg");
+	music.openFromFile("sounds/MainMenu.wav");
 	music.play();
 }
 
@@ -33,7 +33,7 @@ void MainMenu::draw(sf::RenderWindow& window) {
 
 void MainMenu::moveUp() {
 	if (selectedItemIndex == 1) {
-		menu[selectedItemIndex].setFillColor(sf::Color::White);
+		menu[selectedItemIndex].setFillColor(sf::Color::Black);
 		selectedItemIndex -= 1;
 		menu[selectedItemIndex].setFillColor(sf::Color::Red);
 	}
@@ -41,7 +41,7 @@ void MainMenu::moveUp() {
 
 void MainMenu::moveDown() {
 	if (selectedItemIndex == 0) {
-		menu[selectedItemIndex].setFillColor(sf::Color::White);
+		menu[selectedItemIndex].setFillColor(sf::Color::Black);
 		selectedItemIndex += 1;
 		menu[selectedItemIndex].setFillColor(sf::Color::Red);
 	}

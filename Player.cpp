@@ -3,41 +3,34 @@
 #include <iostream>
 
 Player::Player(b2World& world, sf::Color color, b2Vec2 position) {
-	playerBodyDef.type = b2_dynamicBody;
-	playerBodyDef.position.Set(position.x, position.y);
-	playerBody = world.CreateBody(&playerBodyDef);
+    playerBodyDef.type = b2_dynamicBody;
+    playerBodyDef.position.Set(position.x, position.y);
+    playerBody = world.CreateBody(&playerBodyDef);
 
-	playerShape.m_radius = PLAYER_RADIUS / SCALE;
+    playerShape.m_radius = PLAYER_RADIUS / SCALE;
 
-	playerFixtureDef.shape = &playerShape;
+    playerFixtureDef.shape = &playerShape;
+    playerFixtureDef.density = 20.0f;
+    playerFixtureDef.friction = 0.3f;
+    playerFixtureDef.restitution = 0.0f;
 
-	playerFixtureDef.density = 20.0f;
-	playerFixtureDef.friction = 0.3f;
-	playerFixtureDef.restitution = 0.0f;
-
-	playerBody->CreateFixture(&playerFixtureDef);
-
-	sfPlayer = sf::CircleShape(PLAYER_RADIUS);
-	sfPlayer.setOrigin(PLAYER_RADIUS, PLAYER_RADIUS);
-	score = 0;
-	bootSprite.setScale(sf::Vector2f(0.2f, 0.2f));
-	
+    playerBody->CreateFixture(&playerFixtureDef);
+    sfPlayer = sf::CircleShape(PLAYER_RADIUS);
+    sfPlayer.setOrigin(PLAYER_RADIUS, PLAYER_RADIUS);
+    score = 0;
+    bootSprite.setScale(sf::Vector2f(0.2f, 0.2f));
+    kickSound.openFromFile("sounds/Hob.wav");
+    kickSound.setVolume(7);
+    earlyTime = std::chrono::system_clock::now();
 }
-
 
 void Player::move() {
-	float desiredVelocity = PLAYER_SPEED * direction;
-	b2Vec2 currentVelocity = playerBody->GetLinearVelocity();
-
-	float velocityChange = desiredVelocity - currentVelocity.x;
-	float impulse = playerBody->GetMass() * velocityChange;
-
-	playerBody->ApplyLinearImpulse(b2Vec2(impulse, 0.0f), playerBody->GetWorldCenter(), true);
+    float desiredVelocity = PLAYER_SPEED * direction;
+    b2Vec2 currentVelocity = playerBody->GetLinearVelocity();
+    float velocityChange = desiredVelocity - currentVelocity.x;
+    float impulse = playerBody->GetMass() * velocityChange;
+    playerBody->ApplyLinearImpulse(b2Vec2(impulse, 0.0f), playerBody->GetWorldCenter(), true);
 }
-
-
-
-
 
 void Player::update() {
     b2Vec2 PlayerPosition = this->playerBody->GetPosition();
@@ -45,20 +38,26 @@ void Player::update() {
     this->sfPlayer.setPosition(PlayerPosition.x * SCALE, PlayerPosition.y * SCALE);
     this->sfPlayer.setRotation(PlayerAngle * 180.0f / 3.14159f);
 
-    bootSprite.setPosition(sfPlayer.getPosition().x - 15, sfPlayer.getPosition().y + 20);
+    if(this->number == 1){
+        bootSprite.setPosition(sfPlayer.getPosition().x - 20, sfPlayer.getPosition().y + 45);
+    }
+    else if (this->number == 2) {
+        bootSprite.setPosition(sfPlayer.getPosition().x + 20, sfPlayer.getPosition().y + 45);
+    }
+
     bootSprite.setRotation(sfPlayer.getRotation());
 
     if (isKicking) {
         kickTimer += 0.05f;
         if (kickTimer < 0.5f) {
-            animateKick(); 
+            animateKick();
         }
         else if (kickTimer < 1.0f) {
-            bootSprite.setRotation(sfPlayer.getRotation()); 
+            bootSprite.setRotation(sfPlayer.getRotation());
         }
         else {
             isKicking = false;
-            kickTimer = 0.0f; 
+            kickTimer = 0.0f;
         }
     }
 }
@@ -76,14 +75,20 @@ void Player::kick(Ball& ball) {
     double dS = sqrt(dx * dx + dy * dy);
     if (dS < 100) {
         ball.ballBody->ApplyLinearImpulseToCenter(b2Vec2(90, -50), true);
-
         isKicking = true;
         animateKick();
     }
+
 }
 
-void Player::animateKick() {
-    bootSprite.setRotation(sfPlayer.getRotation() - 45.0f);
+void Player1::animateKick() {
+    float rotationOffset = -45.0f * sin(kickTimer * 3.14159f);
+    bootSprite.setRotation(sfPlayer.getRotation() + rotationOffset);
+}
+
+void Player2::animateKick() {
+    float rotationOffset = 45.0f * sin(kickTimer * 3.14159f);
+    bootSprite.setRotation(sfPlayer.getRotation() + rotationOffset);
 }
 
 void Player1::kick(Ball& ball) {
@@ -93,8 +98,9 @@ void Player1::kick(Ball& ball) {
     animateKick();
     isKicking = true;
     if (dS < 100) {
-        ball.ballBody->ApplyLinearImpulseToCenter(b2Vec2(90, -50), true);
+        ball.ballBody->ApplyLinearImpulseToCenter(b2Vec2(180, -100), true);
     }
+    kickSound.play();
 }
 
 void Player2::kick(Ball& ball) {
@@ -104,6 +110,7 @@ void Player2::kick(Ball& ball) {
     animateKick();
     isKicking = true;
     if (dS < 100) {
-        ball.ballBody->ApplyLinearImpulseToCenter(b2Vec2(-90, -50), true);;
+        ball.ballBody->ApplyLinearImpulseToCenter(b2Vec2(-180, -100), true);
     }
+    kickSound.play();
 }
