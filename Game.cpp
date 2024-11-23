@@ -121,8 +121,8 @@ void Game::draw() {
     if (inGame) {
         window.clear();
         window.draw(backgroundSprite);
-        window.draw(box.sfGround);
-        window.draw(ball.sfBall);
+        window.draw(box.getSFGround());
+        window.draw(ball.getSFBall());
         window.draw(player1.sfPlayer);
         window.draw(player2.sfPlayer);
         window.draw(player1.bootSprite);
@@ -139,26 +139,26 @@ void Game::draw() {
 }
 
 void Game::check_goal() {
-    if (ball.ballBody->GetPosition().x <= leftGoal.horizontalBody->GetPosition().x + (leftGoal.roofWidth / 2 / SCALE) &&
-        ball.ballBody->GetPosition().y >= leftGoal.horizontalBody->GetPosition().y - (leftGoal.roofHeight / 2 / SCALE))
+    if (ball.getPosition().x <= leftGoal.horizontalBody->GetPosition().x + (leftGoal.roofWidth / 2 / SCALE) &&
+        ball.getPosition().y >= leftGoal.horizontalBody->GetPosition().y - (leftGoal.roofHeight / 2 / SCALE))
     {
         player2.score += 1;
         score.updateScore(2);
-        ball.ballBody->SetTransform(ballStartPosition, 0);
-        ball.ballBody->SetLinearVelocity(b2Vec2(0, 0));
-        ball.ballBody->SetAngularVelocity(0);
+        ball.getBallBody()->SetTransform(ballStartPosition, 0);
+        ball.getBallBody()->SetLinearVelocity(b2Vec2(0, 0));
+        ball.getBallBody()->SetAngularVelocity(0);
         drawGoalText();
         player1.playerBody->SetTransform(b2Vec2((2 * PLAYER_RADIUS + 20) / SCALE, 400 / SCALE), 0);
         player2.playerBody->SetTransform(b2Vec2((WINDOW_WIDTH - 2 * PLAYER_RADIUS - 20) / SCALE, 400 / SCALE), 0);
     }
-    else if (ball.ballBody->GetPosition().x >= rightGoal.horizontalBody->GetPosition().x - (rightGoal.roofWidth / 2 / SCALE) &&
-        ball.ballBody->GetPosition().y >= leftGoal.horizontalBody->GetPosition().y - (leftGoal.roofHeight / 2 / SCALE))
+    else if (ball.getPosition().x >= rightGoal.horizontalBody->GetPosition().x - (rightGoal.roofWidth / 2 / SCALE) &&
+        ball.getPosition().y >= leftGoal.horizontalBody->GetPosition().y - (leftGoal.roofHeight / 2 / SCALE))
     {
         player1.score += 1;
         score.updateScore(1);
-        ball.ballBody->SetTransform(ballStartPosition, 0);
-        ball.ballBody->SetLinearVelocity(b2Vec2(0, 0));
-        ball.ballBody->SetAngularVelocity(0);
+        ball.getBallBody()->SetTransform(ballStartPosition, 0);
+        ball.getBallBody()->SetLinearVelocity(b2Vec2(0, 0));
+        ball.getBallBody()->SetAngularVelocity(0);
         drawGoalText();
         player1.playerBody->SetTransform(b2Vec2((2 * PLAYER_RADIUS + 20) / SCALE, 400 / SCALE), 0);
         player2.playerBody->SetTransform(b2Vec2((WINDOW_WIDTH - 2 * PLAYER_RADIUS - 20) / SCALE, 400 / SCALE), 0);
@@ -251,9 +251,9 @@ void Game::checkWin() {
         menu.music.play();
         player1.playerBody->SetTransform(b2Vec2((2 * PLAYER_RADIUS + 20) / SCALE, 400 / SCALE), 0);
         player2.playerBody->SetTransform(b2Vec2((WINDOW_WIDTH - 2 * PLAYER_RADIUS - 20) / SCALE, 400 / SCALE), 0);
-        ball.ballBody->SetTransform(ballStartPosition, 0);
-        ball.ballBody->SetLinearVelocity(b2Vec2(0, 0));
-        ball.ballBody->SetAngularVelocity(0);
+        ball.getBallBody()->SetTransform(ballStartPosition, 0);
+        ball.getBallBody()->SetLinearVelocity(b2Vec2(0, 0));
+        ball.getBallBody()->SetAngularVelocity(0);
     }
 }
 
@@ -294,8 +294,8 @@ void Game::start() {
         text.setPosition(WINDOW_WIDTH / 2 - 24, WINDOW_HEIGHT / 2 - 50);
         window.clear();
         window.draw(backgroundSprite);
-        window.draw(box.sfGround);
-        window.draw(ball.sfBall);
+        window.draw(box.getSFGround());
+        window.draw(ball.getSFBall());
         window.draw(player1.sfPlayer);
         window.draw(player2.sfPlayer);
         window.draw(player2.bootSprite);

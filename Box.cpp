@@ -30,4 +30,10 @@ Box::Box(b2World& world) {
     rightwallFixtureDef.friction = 0.0f;
     rightwallBody->CreateFixture(&rightwallFixtureDef);
 
+
+
+}
+
+sf::RectangleShape Box::getSFGround() {
+    return sfGround;
 }

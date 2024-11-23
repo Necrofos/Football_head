@@ -11,10 +11,9 @@ public:
 	void moveUp();
 	void draw(sf::RenderWindow& window);
 	void playMusic();
+
 	float width;
 	float height;
-
-
 	sf::Font font;
 	sf::Text menu[2];
 	sf::Texture backgroundTexture;

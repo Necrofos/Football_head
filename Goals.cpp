@@ -47,3 +47,7 @@ void Goal::draw(sf::RenderWindow& window) {
 	window.draw(SFhorizontalShape);
 	window.draw(sfGoalShape);
 }
+
+b2Vec2 Goal::getRoofPosition() {
+	return b2Vec2(horizontalBody->GetPosition().x - (roofWidth / 2 / SCALE), horizontalBody->GetPosition().y - (roofHeight / 2 / SCALE));
+}

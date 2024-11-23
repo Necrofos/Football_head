@@ -10,7 +10,6 @@ public:
 	void updateScore(int playerNumber);
 	void draw(sf::RenderWindow& window);
 
-
 	sf::Vector2f position;
 	int player1;
 	int player2;

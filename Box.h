@@ -5,6 +5,9 @@ class Box {
 public:
 	//Земля
 	Box(b2World& world);
+
+	sf::RectangleShape getSFGround();
+
 	b2BodyDef groundBodyDef;
 	b2Body* groundBody;
 	sf::RectangleShape sfGround;
@@ -26,5 +29,6 @@ public:
 	b2BodyDef ceilingBodyDef;
 	b2Body* ceilingBody;
 	b2PolygonShape ceilingBox;
+
 };
 

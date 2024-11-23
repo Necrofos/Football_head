@@ -70,11 +70,11 @@ void Player::jump() {
 }
 
 void Player::kick(Ball& ball) {
-    float dx = ball.sfBall.getPosition().x - this->sfPlayer.getPosition().x;
-    float dy = ball.sfBall.getPosition().y - this->sfPlayer.getPosition().y;
+    float dx = ball.getSFBall().getPosition().x - this->sfPlayer.getPosition().x;
+    float dy = ball.getSFBall().getPosition().y - this->sfPlayer.getPosition().y;
     double dS = sqrt(dx * dx + dy * dy);
     if (dS < 100) {
-        ball.ballBody->ApplyLinearImpulseToCenter(b2Vec2(90, -50), true);
+        ball.getBallBody()->ApplyLinearImpulseToCenter(b2Vec2(90, -50), true);
         isKicking = true;
         animateKick();
     }
@@ -92,25 +92,25 @@ void Player2::animateKick() {
 }
 
 void Player1::kick(Ball& ball) {
-    float dx = ball.sfBall.getPosition().x - this->sfPlayer.getPosition().x;
-    float dy = ball.sfBall.getPosition().y - this->sfPlayer.getPosition().y;
+    float dx = ball.getSFBall().getPosition().x - this->sfPlayer.getPosition().x;
+    float dy = ball.getSFBall().getPosition().y - this->sfPlayer.getPosition().y;
     double dS = sqrt(dx * dx + dy * dy);
     animateKick();
     isKicking = true;
     if (dS < 100) {
-        ball.ballBody->ApplyLinearImpulseToCenter(b2Vec2(180, -100), true);
+        ball.getBallBody()->ApplyLinearImpulseToCenter(b2Vec2(180, -100), true);
     }
     kickSound.play();
 }
 
 void Player2::kick(Ball& ball) {
-    float dx = ball.sfBall.getPosition().x - this->sfPlayer.getPosition().x;
-    float dy = ball.sfBall.getPosition().y - this->sfPlayer.getPosition().y;
+    float dx = ball.getSFBall().getPosition().x - this->sfPlayer.getPosition().x;
+    float dy = ball.getSFBall().getPosition().y - this->sfPlayer.getPosition().y;
     double dS = sqrt(dx * dx + dy * dy);
     animateKick();
     isKicking = true;
     if (dS < 100) {
-        ball.ballBody->ApplyLinearImpulseToCenter(b2Vec2(-180, -100), true);
+        ball.getBallBody()->ApplyLinearImpulseToCenter(b2Vec2(-180, -100), true);
     }
     kickSound.play();
 }

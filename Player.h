@@ -10,6 +10,11 @@ class Player
 {
 public:
     Player(b2World& world, sf::Color color, b2Vec2 position);
+    void move();
+    void update();
+    void jump();
+    virtual void kick(Ball& ball) = 0;
+    virtual void animateKick() = 0;
     b2Body* playerBody;
     b2BodyDef playerBodyDef;
     b2CircleShape playerShape;
@@ -36,11 +41,7 @@ public:
     float currentRotation;
     int number;
 
-    void move();
-    void update();
-    void jump();
-    virtual void kick(Ball& ball) = 0;
-    virtual void animateKick() = 0; 
+
 };
 
 class Player1 : public Player {

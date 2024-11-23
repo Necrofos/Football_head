@@ -32,3 +32,16 @@ void Ball::update() {
     this->sfBall.setRotation(BallAngle * 180.0f / 3.14159f);
 }
 
+
+b2Body* Ball::getBallBody() {
+    return ballBody;
+}
+
+sf::CircleShape Ball::getSFBall() {
+    return sfBall;
+}
+
+b2Vec2 Ball::getPosition() {
+    return ballBody->GetPosition();
+}
+

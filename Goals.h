@@ -7,14 +7,16 @@
 class Goal {
 public:
     Goal(b2World& world, bool isLeft);
+    void draw(sf::RenderWindow& window);
 
+    //возвращает координату центра прямоугольника верхней крыши ворот в системе координат Box2D
+    b2Vec2 getRoofPosition();
     float goalWidth;
     float goalHeight;
     float roofHeight;
     float roofWidth;
     float xPosition;
     float xRoof;
-    void draw(sf::RenderWindow& window);
     b2BodyDef verticalBodyDef;
     b2BodyDef horizontalBodyDef;
     b2Body* verticalBody;
