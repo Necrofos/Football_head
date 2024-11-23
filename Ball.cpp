@@ -7,6 +7,7 @@ Ball::Ball(b2World& world) {
     ballBody = world.CreateBody(&ballBodyDef);
 
     ballShape.m_radius = RADIUS / SCALE;
+    ballStartPosition = b2Vec2(WINDOW_WIDTH / 2 / SCALE, (WINDOW_HEIGHT / 2 - 100) / SCALE);
 
 
     ballFixtureDef.shape = &ballShape;
@@ -43,5 +44,11 @@ sf::CircleShape Ball::getSFBall() {
 
 b2Vec2 Ball::getPosition() {
     return ballBody->GetPosition();
+}
+
+void Ball::returnInInitialState() {
+    ballBody->SetTransform(ballStartPosition, 0);
+    ballBody->SetLinearVelocity(b2Vec2(0, 0));
+    ballBody->SetAngularVelocity(0);
 }
 

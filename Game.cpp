@@ -7,8 +7,8 @@ Game::Game()
     ball(world),
     player1(world, sf::Color::Red, b2Vec2((2 * PLAYER_RADIUS + 20) / SCALE, 400 / SCALE)),
     player2(world, sf::Color::Blue, b2Vec2((WINDOW_WIDTH - 2 * PLAYER_RADIUS - 20) / SCALE, 400 / SCALE)),
-    leftGoal(world, true),
-    rightGoal(world, false),
+    leftGoal(world),
+    rightGoal(world),
     score(world),
     menu(window.getSize().x, window.getSize().y)
 {
@@ -139,26 +139,22 @@ void Game::draw() {
 }
 
 void Game::check_goal() {
-    if (ball.getPosition().x <= leftGoal.horizontalBody->GetPosition().x + (leftGoal.roofWidth / 2 / SCALE) &&
-        ball.getPosition().y >= leftGoal.horizontalBody->GetPosition().y - (leftGoal.roofHeight / 2 / SCALE))
+    if (ball.getPosition().x <= leftGoal.getRoofPosition().x &&
+        ball.getPosition().y >= leftGoal.getRoofPosition().y)
     {
         player2.score += 1;
         score.updateScore(2);
-        ball.getBallBody()->SetTransform(ballStartPosition, 0);
-        ball.getBallBody()->SetLinearVelocity(b2Vec2(0, 0));
-        ball.getBallBody()->SetAngularVelocity(0);
+        ball.returnInInitialState();
         drawGoalText();
         player1.playerBody->SetTransform(b2Vec2((2 * PLAYER_RADIUS + 20) / SCALE, 400 / SCALE), 0);
         player2.playerBody->SetTransform(b2Vec2((WINDOW_WIDTH - 2 * PLAYER_RADIUS - 20) / SCALE, 400 / SCALE), 0);
     }
-    else if (ball.getPosition().x >= rightGoal.horizontalBody->GetPosition().x - (rightGoal.roofWidth / 2 / SCALE) &&
-        ball.getPosition().y >= leftGoal.horizontalBody->GetPosition().y - (leftGoal.roofHeight / 2 / SCALE))
+    else if (ball.getPosition().x >= rightGoal.getRoofPosition().x &&
+        ball.getPosition().y >= rightGoal.getRoofPosition().y )
     {
         player1.score += 1;
         score.updateScore(1);
-        ball.getBallBody()->SetTransform(ballStartPosition, 0);
-        ball.getBallBody()->SetLinearVelocity(b2Vec2(0, 0));
-        ball.getBallBody()->SetAngularVelocity(0);
+        ball.returnInInitialState();
         drawGoalText();
         player1.playerBody->SetTransform(b2Vec2((2 * PLAYER_RADIUS + 20) / SCALE, 400 / SCALE), 0);
         player2.playerBody->SetTransform(b2Vec2((WINDOW_WIDTH - 2 * PLAYER_RADIUS - 20) / SCALE, 400 / SCALE), 0);

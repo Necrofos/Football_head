@@ -24,7 +24,6 @@ private:
     void checkWin();
     void drawGoalText();
     void start();
-    void afterGameMenu();
 
     sf::RenderWindow window;
     b2World world;
@@ -32,8 +31,8 @@ private:
     Player2 player2;
     Ball ball;
     Box box;
-    Goal leftGoal;
-    Goal rightGoal;
+    LeftGoal leftGoal;
+    RightGoal rightGoal;
     Score score;
     MainMenu menu;
     sf::Texture backgroundTexture;
@@ -46,7 +45,5 @@ private:
     sf::Music ballSound;
     sf::Music backgroundMusic;
     GameContactListener* contactListener;
-
-
 };
 

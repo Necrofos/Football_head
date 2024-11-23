@@ -18,11 +18,15 @@ public:
 
 	//Возвращает координаты центра мяча в системе Box2D
 	b2Vec2 getPosition();
+
+	void returnInInitialState();
 private:
 	b2Body* ballBody;
 	b2BodyDef ballBodyDef;
 	b2CircleShape ballShape;
 	b2FixtureDef ballFixtureDef;
+
+	b2Vec2 ballStartPosition;
 
 	sf::CircleShape sfBall;
 	sf::Texture ballTexture;
