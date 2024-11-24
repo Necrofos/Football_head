@@ -34,13 +34,6 @@ void Ball::update() {
 }
 
 
-b2Body* Ball::getBallBody() {
-    return ballBody;
-}
-
-sf::CircleShape Ball::getSFBall() {
-    return sfBall;
-}
 
 b2Vec2 Ball::getPosition() {
     return ballBody->GetPosition();

@@ -122,7 +122,7 @@ void Game::render() {
         ball.render(window);
         player1.render(window);
         player2.render(window);
-        score.draw(window);
+        score.render(window);
         leftGoal.render(window);
         rightGoal.render(window);
         window.display();
@@ -275,8 +275,8 @@ void Game::start() {
         text.setPosition(WINDOW_WIDTH / 2 - 24, WINDOW_HEIGHT / 2 - 50);
         window.clear();
         window.draw(backgroundSprite);
-        window.draw(ball.getSFBall());
-        score.draw(window);
+        ball.render(window);
+        score.render(window);
         leftGoal.render(window);
         rightGoal.render(window);
         player1.render(window);

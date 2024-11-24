@@ -72,7 +72,7 @@ void Score::updateText() {
     timerText.setString((minutes < 10 ? "0" : "") + std::to_string(minutes) + ":" + (seconds < 10 ? "0" : "") + std::to_string(seconds));
 }
 
-void Score::draw(sf::RenderWindow& window) {
+void Score::render(sf::RenderWindow& window) {
     window.draw(boardShape);
     window.draw(score1);
     window.draw(score2);

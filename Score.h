@@ -8,7 +8,7 @@ public:
 	Score(b2World& world);
 	void updateText();
 	void updateScore(int playerNumber);
-	void draw(sf::RenderWindow& window);
+	void render(sf::RenderWindow& window);
 	void returnInInitialState();
 	int getScorePlayer1();
 	int getScorePlayer2();
