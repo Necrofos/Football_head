@@ -6,11 +6,9 @@ public:
 	//Земля
 	Box(b2World& world);
 
-	sf::RectangleShape getSFGround();
-
+private:
 	b2BodyDef groundBodyDef;
 	b2Body* groundBody;
-	sf::RectangleShape sfGround;
 	b2PolygonShape groundBox;
 
 	//Левая стена

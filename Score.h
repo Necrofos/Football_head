@@ -9,12 +9,18 @@ public:
 	void updateText();
 	void updateScore(int playerNumber);
 	void draw(sf::RenderWindow& window);
+	void returnInInitialState();
+	int getScorePlayer1();
+	int getScorePlayer2();
+	int getTimeRemaining();
 
+private:
 	sf::Vector2f position;
-	int player1;
-	int player2;
+
 	int timeRemaining;
 	sf::Font font;
+	int player1;
+	int player2;
 
 	sf::Text text;
 	sf::Text score1;

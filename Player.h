@@ -15,6 +15,15 @@ public:
     void jump();
     virtual void kick(Ball& ball) = 0;
     virtual void animateKick() = 0;
+    void setMoveDirection(int direction);
+    bool wasJumping;
+    bool isKicking;
+    sf::Sprite getBootSprite();
+    sf::CircleShape getSFShape();
+
+    void render(sf::RenderWindow& window);
+    virtual void returnInStartPosition() = 0;
+protected:
     b2Body* playerBody;
     b2BodyDef playerBodyDef;
     b2CircleShape playerShape;
@@ -33,10 +42,10 @@ public:
 
 
     
-    bool isKicking;
+
     float kickTimer = 0.0f;
     int score;
-    bool wasJumping;
+
     int direction;
     float currentRotation;
     int number;
@@ -57,6 +66,7 @@ public:
     }
     void kick(Ball& ball) override;
     void animateKick() override; 
+    void returnInStartPosition() override;
 };
 
 class Player2 : public Player {
@@ -72,4 +82,5 @@ public:
     }
     void kick(Ball& ball) override;
     void animateKick() override; 
+    void returnInStartPosition() override;
 };

@@ -20,6 +20,8 @@ public:
 	b2Vec2 getPosition();
 
 	void returnInInitialState();
+
+	void render(sf::RenderWindow& window);
 private:
 	b2Body* ballBody;
 	b2BodyDef ballBodyDef;

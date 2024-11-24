@@ -8,7 +8,7 @@ Goal::Goal(b2World& world) {
 	yGoal = WINDOW_HEIGHT - goalHeight - roofHeight - 20;
 }
 
-void Goal::draw(sf::RenderWindow& window) {
+void Goal::render(sf::RenderWindow& window) {
 	window.draw(SFverticalShape);
 	window.draw(SFhorizontalShape);
 	window.draw(sfGoalShape);

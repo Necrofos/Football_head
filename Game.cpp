@@ -21,8 +21,6 @@ Game::Game()
     window.setFramerateLimit(60);
     backgroundTexture.loadFromFile("icons/backgrounds/background1.jpg");
     backgroundSprite.setTexture(backgroundTexture);
-    player1.playerBody->SetFixedRotation(true);
-    player2.playerBody->SetFixedRotation(true);
     whistle.openFromFile("sounds/Whistle.wav");
     goalScore.openFromFile("sounds/goalscored3.wav");
     world.SetContactListener(contactListener);
@@ -33,7 +31,7 @@ Game::Game()
 
 void Game::run() {
     while (window.isOpen()) {
-        draw(); 
+        render(); 
         if (inGame) {
             processingEventsInGame();
             check_goal();
@@ -58,22 +56,22 @@ void Game::processingEventsInGame() {
             window.close();
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-            player1.direction = -1;
+            player1.setMoveDirection(-1);
         }
         if (!sf::Keyboard::isKeyPressed(sf::Keyboard::A) and !sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
-            player1.direction = 0;
+            player1.setMoveDirection(0);
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-            player1.direction = 1;
+            player1.setMoveDirection(1);
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-            player2.direction = -1;
+            player2.setMoveDirection(-1);
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-            player2.direction = 1;
+            player2.setMoveDirection(1);
         }
         if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Left) and !sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){
-            player2.direction = 0;
+            player2.setMoveDirection(0);
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && !(player1.wasJumping)) {
             player1.jump();
@@ -117,19 +115,16 @@ void Game::update() {
 
 }
 
-void Game::draw() {
+void Game::render() {
     if (inGame) {
         window.clear();
         window.draw(backgroundSprite);
-        window.draw(box.getSFGround());
-        window.draw(ball.getSFBall());
-        window.draw(player1.sfPlayer);
-        window.draw(player2.sfPlayer);
-        window.draw(player1.bootSprite);
-        window.draw(player2.bootSprite);
+        ball.render(window);
+        player1.render(window);
+        player2.render(window);
         score.draw(window);
-        leftGoal.draw(window);
-        rightGoal.draw(window);
+        leftGoal.render(window);
+        rightGoal.render(window);
         window.display();
     }
     else {
@@ -142,22 +137,20 @@ void Game::check_goal() {
     if (ball.getPosition().x <= leftGoal.getRoofPosition().x &&
         ball.getPosition().y >= leftGoal.getRoofPosition().y)
     {
-        player2.score += 1;
         score.updateScore(2);
         ball.returnInInitialState();
         drawGoalText();
-        player1.playerBody->SetTransform(b2Vec2((2 * PLAYER_RADIUS + 20) / SCALE, 400 / SCALE), 0);
-        player2.playerBody->SetTransform(b2Vec2((WINDOW_WIDTH - 2 * PLAYER_RADIUS - 20) / SCALE, 400 / SCALE), 0);
+        player1.returnInStartPosition();
+        player2.returnInStartPosition();
     }
     else if (ball.getPosition().x >= rightGoal.getRoofPosition().x &&
         ball.getPosition().y >= rightGoal.getRoofPosition().y )
     {
-        player1.score += 1;
         score.updateScore(1);
         ball.returnInInitialState();
         drawGoalText();
-        player1.playerBody->SetTransform(b2Vec2((2 * PLAYER_RADIUS + 20) / SCALE, 400 / SCALE), 0);
-        player2.playerBody->SetTransform(b2Vec2((WINDOW_WIDTH - 2 * PLAYER_RADIUS - 20) / SCALE, 400 / SCALE), 0);
+        player1.returnInStartPosition();
+        player2.returnInStartPosition();
     }
 }
 
@@ -169,17 +162,15 @@ void Game::processingEventsInMenu() {
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
             menu.moveUp();
-            menu.click.play();
         }
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-            menu.click.play();
             menu.moveDown();
         }
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) {
-            menu.click.play();
-            if (menu.selectedItemIndex == 0) {
+            menu.playClick();
+            if (menu.isPlaySelected()) {
                 inGame = true;
-                menu.music.stop();
+                menu.stopMusic();
                 gameStart = true;
                 backgroundMusic.play();
             }
@@ -200,34 +191,32 @@ void Game::checkWin() {
     text.setPosition(WINDOW_WIDTH / 2 - 150, WINDOW_HEIGHT / 2 - 50);
     sf::Music crowd;
     crowd.openFromFile("sounds/goalscored3.wav");
-    if (score.player1 == BALLS_FOR_WIN || score.player2 == BALLS_FOR_WIN) {
+    if (score.getScorePlayer1() == BALLS_FOR_WIN || score.getScorePlayer2() == BALLS_FOR_WIN) {
         std::string winner;
-        if (score.player1 == BALLS_FOR_WIN) {
+        if (score.getScorePlayer1() == BALLS_FOR_WIN) {
             winner = "Winner: Player1";
         }
-        else if (score.player2 == BALLS_FOR_WIN) {
+        else if (score.getScorePlayer2() == BALLS_FOR_WIN) {
             winner = "Winner: Player2";
         }
         text.setString(winner);
 
         inGame = false;
-        score.player1 = 0;
-        score.player2 = 0;
-        score.timeRemaining = GAME_TIME;
+        score.returnInInitialState();
         window.draw(text);
         window.display();
         crowd.play();
         std::this_thread::sleep_for(std::chrono::seconds(4));
         backgroundMusic.stop();
-        menu.music.play();
+        menu.playMusic();
     }
-    else if (score.timeRemaining == 0) {
+    else if (score.getTimeRemaining() == 0) {
         inGame = false;
 
-        if (score.player1 > score.player2) {
+        if (score.getScorePlayer1() > score.getScorePlayer2()) {
             text.setString("Winner: Player1");
         }
-        else if (score.player2 > score.player1) {
+        else if (score.getScorePlayer2() > score.getScorePlayer2()) {
             text.setString("Winner: Player2");
         }
         else {
@@ -241,21 +230,17 @@ void Game::checkWin() {
         std::this_thread::sleep_for(std::chrono::seconds(4));
         backgroundMusic.stop();
 
-        score.player1 = 0;
-        score.player2 = 0;
-        score.timeRemaining = GAME_TIME;
-        menu.music.play();
-        player1.playerBody->SetTransform(b2Vec2((2 * PLAYER_RADIUS + 20) / SCALE, 400 / SCALE), 0);
-        player2.playerBody->SetTransform(b2Vec2((WINDOW_WIDTH - 2 * PLAYER_RADIUS - 20) / SCALE, 400 / SCALE), 0);
-        ball.getBallBody()->SetTransform(ballStartPosition, 0);
-        ball.getBallBody()->SetLinearVelocity(b2Vec2(0, 0));
-        ball.getBallBody()->SetAngularVelocity(0);
+        score.returnInInitialState();
+        menu.playMusic();
+        player1.returnInStartPosition();
+        player2.returnInStartPosition();
+        ball.returnInInitialState();
     }
 }
 
 
 void Game::drawGoalText() {
-    if (player1.score != BALLS_FOR_WIN and player2.score != BALLS_FOR_WIN) {
+    if (score.getScorePlayer1() != BALLS_FOR_WIN and score.getScorePlayer2() != BALLS_FOR_WIN) {
         backgroundMusic.setVolume(5);
         goalScore.play();
         sf::Text text;
@@ -290,16 +275,12 @@ void Game::start() {
         text.setPosition(WINDOW_WIDTH / 2 - 24, WINDOW_HEIGHT / 2 - 50);
         window.clear();
         window.draw(backgroundSprite);
-        window.draw(box.getSFGround());
         window.draw(ball.getSFBall());
-        window.draw(player1.sfPlayer);
-        window.draw(player2.sfPlayer);
-        window.draw(player2.bootSprite);
-        window.draw(player1.bootSprite);
         score.draw(window);
-        leftGoal.draw(window);
-        rightGoal.draw(window);
-
+        leftGoal.render(window);
+        rightGoal.render(window);
+        player1.render(window);
+        player2.render(window);
         window.draw(text);
         window.display();
 

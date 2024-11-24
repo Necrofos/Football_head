@@ -19,7 +19,7 @@ private:
     void processingEventsInGame();
     void processingEventsInMenu();
     void update();
-    void draw();
+    void render();
     void check_goal();
     void checkWin();
     void drawGoalText();

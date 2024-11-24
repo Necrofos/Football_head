@@ -80,3 +80,21 @@ void Score::draw(sf::RenderWindow& window) {
     window.draw(player2Label);
     window.draw(timerText);
 }
+
+int Score::getScorePlayer1() {
+    return player1;
+}
+
+int Score::getScorePlayer2() {
+    return player2;
+}
+
+void Score::returnInInitialState() {
+    player1 = 0;
+    player2 = 0;
+    timeRemaining = GAME_TIME;
+}
+
+int Score::getTimeRemaining() {
+    return timeRemaining;
+}

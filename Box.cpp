@@ -33,7 +33,3 @@ Box::Box(b2World& world) {
 
 
 }
-
-sf::RectangleShape Box::getSFGround() {
-    return sfGround;
-}

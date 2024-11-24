@@ -36,6 +36,7 @@ void MainMenu::moveUp() {
 		menu[selectedItemIndex].setFillColor(sf::Color::Black);
 		selectedItemIndex -= 1;
 		menu[selectedItemIndex].setFillColor(sf::Color::Red);
+		click.play();
 	}
 }
 
@@ -44,7 +45,24 @@ void MainMenu::moveDown() {
 		menu[selectedItemIndex].setFillColor(sf::Color::Black);
 		selectedItemIndex += 1;
 		menu[selectedItemIndex].setFillColor(sf::Color::Red);
+		click.play();
 	}
+}
+
+void MainMenu::playMusic() {
+	music.play();
+}
+
+void MainMenu::stopMusic() {
+	music.stop();
+}
+
+void MainMenu::playClick() {
+	click.play();
+}
+
+bool MainMenu::isPlaySelected() {
+	return (selectedItemIndex == 0);
 }
 
 

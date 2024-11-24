@@ -6,6 +6,7 @@ Player::Player(b2World& world, sf::Color color, b2Vec2 position) {
     playerBodyDef.type = b2_dynamicBody;
     playerBodyDef.position.Set(position.x, position.y);
     playerBody = world.CreateBody(&playerBodyDef);
+    playerBody->SetFixedRotation(true);
 
     playerShape.m_radius = PLAYER_RADIUS / SCALE;
 
@@ -113,4 +114,30 @@ void Player2::kick(Ball& ball) {
         ball.getBallBody()->ApplyLinearImpulseToCenter(b2Vec2(-180, -100), true);
     }
     kickSound.play();
+}
+
+sf::CircleShape Player::getSFShape() {
+    return sfPlayer;
+}
+
+void Player::setMoveDirection(int direction) {
+    this->direction = direction;
+
+}
+
+sf::Sprite Player::getBootSprite() {
+    return bootSprite;
+}
+
+void Player::render(sf::RenderWindow& window) {
+    window.draw(sfPlayer);
+    window.draw(bootSprite);
+}
+
+void Player2::returnInStartPosition() {
+    playerBody->SetTransform(b2Vec2((WINDOW_WIDTH - 2 * PLAYER_RADIUS - 20) / SCALE, 400 / SCALE), 0);
+}
+
+void Player1::returnInStartPosition() {
+    playerBody->SetTransform(b2Vec2((2 * PLAYER_RADIUS + 20) / SCALE, 400 / SCALE), 0);
 }

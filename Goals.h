@@ -8,10 +8,11 @@
 class Goal {
 public:
     Goal(b2World& world);
-    void draw(sf::RenderWindow& window);
+    void render(sf::RenderWindow& window);
 
     //возвращает координату центра прямоугольника верхней крыши ворот в системе координат Box2D
     b2Vec2 getRoofPosition();
+protected:
     float goalWidth;
     float goalHeight;
     float roofHeight;
@@ -38,13 +39,13 @@ public:
 class LeftGoal : public Goal {
 public:
     LeftGoal(b2World& world); 
-    //Возвращает координату правого нижнего угла крыши ворот
+    //Возвращает координату правого нижнего угла крыши ворот в системе Box2D
     b2Vec2 getRoofPosition();
 };
 
 class RightGoal : public Goal {
 public:
     RightGoal(b2World& world);
-    //Возвращает координату левого нижнего угла крыши ворот
+    //Возвращает координату левого нижнего угла крыши ворот в системе Box2D
     b2Vec2 getRoofPosition();
 };

@@ -52,3 +52,6 @@ void Ball::returnInInitialState() {
     ballBody->SetAngularVelocity(0);
 }
 
+void Ball::render(sf::RenderWindow& window) {
+    window.draw(sfBall);
+}

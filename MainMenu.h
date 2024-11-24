@@ -11,7 +11,10 @@ public:
 	void moveUp();
 	void draw(sf::RenderWindow& window);
 	void playMusic();
-
+	void stopMusic();
+	void playClick();
+	bool isPlaySelected();
+private:
 	float width;
 	float height;
 	sf::Font font;
