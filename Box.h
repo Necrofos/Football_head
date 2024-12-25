@@ -29,4 +29,3 @@ private:
 	b2PolygonShape ceilingBox;
 
 };
-

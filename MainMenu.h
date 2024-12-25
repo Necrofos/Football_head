@@ -19,6 +19,8 @@ private:
 	float height;
 	sf::Font font;
 	sf::Text menu[2];
+	sf::Text gameNameText;
+	sf::Font font2;
 	sf::Texture backgroundTexture;
 	sf::Sprite backgroundSprite;
 	sf::Music music;

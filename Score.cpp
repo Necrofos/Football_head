@@ -46,6 +46,8 @@ Score::Score(b2World& world) {
     timeRemaining = GAME_TIME;
 }
 
+
+//Обновление счёта
 void Score::updateScore(int playerNumber) {
     if (playerNumber == 1) {
         player1++;
@@ -55,6 +57,8 @@ void Score::updateScore(int playerNumber) {
     }
 }
 
+
+//Обновление текста на табло
 void Score::updateText() {
     score1.setString(std::to_string(player1));
     score2.setString(std::to_string(player2));
@@ -71,7 +75,7 @@ void Score::updateText() {
     int seconds = timeRemaining % 60;
     timerText.setString((minutes < 10 ? "0" : "") + std::to_string(minutes) + ":" + (seconds < 10 ? "0" : "") + std::to_string(seconds));
 }
-
+//Отрисовка игрового табло
 void Score::render(sf::RenderWindow& window) {
     window.draw(boardShape);
     window.draw(score1);
@@ -80,21 +84,21 @@ void Score::render(sf::RenderWindow& window) {
     window.draw(player2Label);
     window.draw(timerText);
 }
-
+//Получение счёта левого игрока
 int Score::getScorePlayer1() {
     return player1;
 }
-
+//Получение счета правого игрока
 int Score::getScorePlayer2() {
     return player2;
 }
-
+//Возвращает табло в начальное состояние
 void Score::returnInInitialState() {
     player1 = 0;
     player2 = 0;
     timeRemaining = GAME_TIME;
 }
-
+//Возвращает оставшееся время игры
 int Score::getTimeRemaining() {
     return timeRemaining;
 }

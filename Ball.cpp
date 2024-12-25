@@ -26,6 +26,8 @@ Ball::Ball(b2World& world) {
     ballBody->SetUserData((void*)"Ball");
 }
 
+
+//ќбновление позиции м€ча
 void Ball::update() {
     b2Vec2 BallPosition = this->ballBody->GetPosition();
     float BallAngle = this->ballBody->GetAngle();
@@ -34,17 +36,19 @@ void Ball::update() {
 }
 
 
-
+//ѕолучение позиции м€ча
 b2Vec2 Ball::getPosition() {
     return ballBody->GetPosition();
 }
 
+//¬озврат м€ча в начальное положение
 void Ball::returnInInitialState() {
     ballBody->SetTransform(ballStartPosition, 0);
     ballBody->SetLinearVelocity(b2Vec2(0, 0));
     ballBody->SetAngularVelocity(0);
 }
 
+//ќтрисовка м€ча
 void Ball::render(sf::RenderWindow& window) {
     window.draw(sfBall);
 }

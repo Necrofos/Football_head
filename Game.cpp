@@ -14,10 +14,13 @@ Game::Game()
 {
     inGame = false;
     gameStart = true;
+    sf::Image icon;
+    icon.loadFromFile("icons/ball.png");
+    window.setIcon(16, 16, icon.getPixelsPtr());
     ballSound.openFromFile("sounds/ballCollide.wav");
     contactListener = new GameContactListener(ballSound);
     ballStartPosition = b2Vec2(WINDOW_WIDTH / 2 / SCALE, (WINDOW_HEIGHT / 2 - 100) / SCALE);
-    window.create(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Head soccer");
+    window.create(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Head Ball");
     window.setFramerateLimit(60);
     backgroundTexture.loadFromFile("icons/backgrounds/background1.jpg");
     backgroundSprite.setTexture(backgroundTexture);
@@ -25,10 +28,11 @@ Game::Game()
     goalScore.openFromFile("sounds/goalscored3.wav");
     world.SetContactListener(contactListener);
     backgroundMusic.openFromFile("sounds/mainSound.wav");
-    backgroundMusic.setVolume(15);
+    backgroundMusic.setVolume(25);
 
 }
 
+//Запуск игры
 void Game::run() {
     while (window.isOpen()) {
         render(); 
@@ -49,6 +53,7 @@ void Game::run() {
 }
 
 
+//Обработка нажатий клавиш в игре
 void Game::processingEventsInGame() {
     sf::Event event;
     while (window.pollEvent(event)) {
@@ -104,6 +109,8 @@ void Game::processingEventsInGame() {
     }
 }
 
+
+//обновление игрового мира
 void Game::update() {
     if (inGame) {
         world.Step(1.0f / 60.0f, 8, 2);
@@ -114,7 +121,7 @@ void Game::update() {
     }
 
 }
-
+//Отрисовка объектов
 void Game::render() {
     if (inGame) {
         window.clear();
@@ -132,7 +139,7 @@ void Game::render() {
         window.display();
     }
 }
-
+//Проверка, попал ли мяч в ворота
 void Game::check_goal() {
     if (ball.getPosition().x <= leftGoal.getRoofPosition().x &&
         ball.getPosition().y >= leftGoal.getRoofPosition().y)
@@ -154,6 +161,8 @@ void Game::check_goal() {
     }
 }
 
+
+//Обработка событий в меню
 void Game::processingEventsInMenu() {
     sf::Event event;
     while (window.pollEvent(event)) {
@@ -180,7 +189,7 @@ void Game::processingEventsInMenu() {
         }
     }
 }
-
+// Проверка, закончился ли матч
 void Game::checkWin() {
     sf::Text text;
     sf::Font font;
@@ -209,14 +218,14 @@ void Game::checkWin() {
         std::this_thread::sleep_for(std::chrono::seconds(4));
         backgroundMusic.stop();
         menu.playMusic();
+        std::cout << "zashel in mya4i";
     }
     else if (score.getTimeRemaining() == 0) {
-        inGame = false;
 
         if (score.getScorePlayer1() > score.getScorePlayer2()) {
             text.setString("Winner: Player1");
         }
-        else if (score.getScorePlayer2() > score.getScorePlayer2()) {
+        else if (score.getScorePlayer2() > score.getScorePlayer1()) {
             text.setString("Winner: Player2");
         }
         else {
@@ -224,21 +233,24 @@ void Game::checkWin() {
             text.setPosition(WINDOW_WIDTH / 2 - 120, WINDOW_HEIGHT / 2 - 50);
             text.setCharacterSize(80);
         }
+        inGame = false;
+        score.returnInInitialState();
         window.draw(text);
         window.display();
         crowd.play();
+        ball.returnInInitialState();
         std::this_thread::sleep_for(std::chrono::seconds(4));
         backgroundMusic.stop();
-
-        score.returnInInitialState();
         menu.playMusic();
+
         player1.returnInStartPosition();
         player2.returnInStartPosition();
-        ball.returnInInitialState();
+
+        std::cout << "Zashel  in time";
     }
 }
 
-
+//Отрисовка текста при попадании мяча в ворота
 void Game::drawGoalText() {
     if (score.getScorePlayer1() != BALLS_FOR_WIN and score.getScorePlayer2() != BALLS_FOR_WIN) {
         backgroundMusic.setVolume(5);
@@ -255,11 +267,12 @@ void Game::drawGoalText() {
         window.display();
         std::this_thread::sleep_for(std::chrono::seconds(2));
         whistle.play();
-        backgroundMusic.setVolume(50);
+        backgroundMusic.setVolume(25);
     }
-
 }
 
+
+//Старт игры
 void Game::start() {
     gameStart = false;
 
@@ -272,7 +285,7 @@ void Game::start() {
 
     for (int i = 3; i >= 1; --i) {
         text.setString(std::to_string(i));
-        text.setPosition(WINDOW_WIDTH / 2 - 24, WINDOW_HEIGHT / 2 - 50);
+        text.setPosition(WINDOW_WIDTH / 2 - 24, WINDOW_HEIGHT / 2 - 50); 
         window.clear();
         window.draw(backgroundSprite);
         ball.render(window);
@@ -284,16 +297,8 @@ void Game::start() {
         window.draw(text);
         window.display();
 
+
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
     whistle.play();
 }
-
-
-
-
-
-
-
-
-

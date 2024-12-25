@@ -7,13 +7,13 @@ Goal::Goal(b2World& world) {
 	roofWidth = 110.0f;
 	yGoal = WINDOW_HEIGHT - goalHeight - roofHeight - 20;
 }
-
+//Отрисовка ворот
 void Goal::render(sf::RenderWindow& window) {
 	window.draw(SFverticalShape);
 	window.draw(SFhorizontalShape);
 	window.draw(sfGoalShape);
 }
-
+//Возвращает
 b2Vec2 Goal::getRoofPosition() {
 	return b2Vec2(horizontalBody->GetPosition().x + (roofWidth / 2 / SCALE), horizontalBody->GetPosition().y - (roofHeight / 2 / SCALE));
 }

@@ -31,4 +31,3 @@ private:
 	sf::Texture ballTexture;
 
 };
-

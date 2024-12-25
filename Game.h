@@ -16,6 +16,9 @@ public:
     Game();
     void run();
 private:
+    bool inGame;
+    bool gameStart;
+
     void processingEventsInGame();
     void processingEventsInMenu();
     void update();
@@ -37,8 +40,7 @@ private:
     MainMenu menu;
     sf::Texture backgroundTexture;
     sf::Sprite backgroundSprite;
-    bool inGame;
-    bool gameStart;
+
     b2Vec2 ballStartPosition;
     sf::Music whistle;
     sf::Music goalScore;
@@ -46,4 +48,3 @@ private:
     sf::Music backgroundMusic;
     GameContactListener* contactListener;
 };
-

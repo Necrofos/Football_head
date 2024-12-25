@@ -34,4 +34,3 @@ private:
 	sf::Text timerText;
 	sf::Clock gameClock;
 };
-

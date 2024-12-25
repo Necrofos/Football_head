@@ -29,7 +29,4 @@ Box::Box(b2World& world) {
     rightwallFixtureDef.shape = &rightwallBox;
     rightwallFixtureDef.friction = 0.0f;
     rightwallBody->CreateFixture(&rightwallFixtureDef);
-
-
-
 }

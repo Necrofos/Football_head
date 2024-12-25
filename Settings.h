@@ -10,6 +10,6 @@ const float WINDOW_WIDTH = 1280;
 const float WINDOW_HEIGHT = 720;
 const float z = 720;
 
-const int BALLS_FOR_WIN = 2;
+const int BALLS_FOR_WIN = 3;
 
-const int GAME_TIME = 60;
+const int GAME_TIME = 45;
